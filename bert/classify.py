@@ -35,7 +35,7 @@ loss_function.hybridize(static_alloc=True)
 
 metric = mx.metric.Accuracy()
 
-data_train = dataset.MRPCDataset('dev', root='.', field_separator = Splitter(','))
+data_train = dataset.DatasetWrapper('dev', root='.', field_separator = Splitter(','))
 # data_train = dataset.TSVDataset('test.tsv', field_separator = Splitter(','))
 
 sample_id = 0

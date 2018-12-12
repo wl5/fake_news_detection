@@ -14,7 +14,7 @@
 # limitations under the License.
 """BERT datasets."""
 
-__all__ = ['MRPCDataset', 'ClassificationTransform', 'BERTTransform']
+__all__ = ['DatasetWrapper', 'ClassificationTransform', 'BERTTransform']
 
 import os
 import numpy as np
@@ -26,8 +26,8 @@ from gluonnlp.data import TSVDataset
 from gluonnlp.data.registry import register
 
 @register(segment=['train', 'dev', 'test'])
-class MRPCDataset(TSVDataset):
-    """The Microsoft Research Paraphrase Corpus dataset.
+class DatasetWrapper(TSVDataset):
+    """ Simple wrapper around TSVDataset
     Parameters
     ----------
     segment : str or list of str, default 'train'
@@ -42,9 +42,7 @@ class MRPCDataset(TSVDataset):
         self._supported_segments = ['train', 'dev', 'test']
         assert segment in self._supported_segments, 'Unsupported segment: %s'%segment
         path = os.path.join(root, '%s.tsv'%segment)
-        A_IDX, B_IDX, LABEL_IDX = 3, 4, 0
-        # fields = [A_IDX, B_IDX, LABEL_IDX]
-        super(MRPCDataset, self).__init__(path, field_separator = field_separator)
+        super(DatasetWrapper, self).__init__(path, field_separator = field_separator)
 
     @staticmethod
     def get_labels():
