@@ -1,37 +1,12 @@
-<p align="center">
-<img src="https://github.com/uclmr/fakenewschallenge/blob/master/images/uclmr_logo.png" alt="UCL Machine Reading" width="25%"/>
-</p>
+# Fake News Detection
 
-# UCL Machine Reading - FNC-1 Submission
+## Previous work & Acknowledgement
 
-The submission made by [UCL Machine Reading](http://mr.cs.ucl.ac.uk/)
-(UCLMR) during Stage 1 of the [Fake News Challenge](http://www.fakenewschallenge.org/)
-(FNC-1) is based on a single, end-to-end system consisting of lexical as
-well as similarity features passed through a multi-layer perceptron with
-one hidden layer.
+## Team members
 
-Although relatively simple in nature, the system performs on par with
-more elaborate, ensemble-based systems of other teams.
-
-We use two simple bag-of-words representations for the text inputs:
-term frequency (TF) and term frequency-inverse document frequency
-(TF-IDF). The representations and feature thus extracted from the
-headline and body pairs consist of only the following:
-
-* The TF vector of the headline;
-* The TF vector of the body;
-* The cosine similarity between the TF-IDF vectors of the headline and
-body.
-
-A schematic overview of the setup is provided below. Further detailed
-information can be found in a [short paper](http://arxiv.org/abs/1707.03264)
-on arXiv.
-
-<br>
-<br>
-<p align="center">
-<img src="https://github.com/uclmr/fakenewschallenge/blob/master/images/uclmr_system.jpeg" alt="Schematic diagram of UCLMR's model" width="80%"/>
-</p>
+* [Yuanchu Dang](https://www.linkedin.com/in/yuanchu-dang-6364a562/) - Bert model
+* [Yanmin Ji] - LSTM model
+* Wei Luo - Twitter API
 
 
 ## Reproducibility
@@ -121,12 +96,6 @@ respect to the `test_stances_unlabeled.csv` file, however, only the
 predictions are saved and not combined with the `Headline` and `Body ID`
 fields of the source file.
 
-## Team members
-
-* [Benjamin Riedel](https://www.linkedin.com/in/benjaminriedel/) - Full implementation
-* [Isabelle Augenstein](http://isabelleaugenstein.github.io/) - Advice
-* [Georgios Spithourakis](http://geospith.github.io/) - Advice
-* [Sebastian Riedel](http://www.riedelcastro.org/) - Academic supervision
 
 ## Citation
 
