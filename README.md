@@ -1,13 +1,13 @@
 # Fake News Detection
 
-## Previous work & Acknowledgement
-
 ## Team members
 
 * [Yuanchu Dang](https://www.linkedin.com/in/yuanchu-dang-6364a562/) - Bert model
-* [Yanmin Ji] - LSTM model
+* Yanmin Ji - LSTM model
 * Wei Luo - Twitter API
 
+## Previous work & Acknowledgement
+* We forked and built on this [fake news challenge repo](https://github.com/uclmr/fakenewschallenge).
 
 ## Reproducibility
 
