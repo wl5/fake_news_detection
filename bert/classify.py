@@ -73,8 +73,6 @@ grad_clip = 1
 
 num_epochs = 3
 
-import pdb; pdb.set_trace()
-
 for epoch_id in range(num_epochs):
     metric.reset()
     step_loss = 0
@@ -90,7 +88,6 @@ for epoch_id in range(num_epochs):
             # forward computation
             out = model(token_ids, segment_ids, valid_length.astype('float32'))
             ls = loss_function(out, label).mean()
-            import pdb; pdb.set_trace()
 
         # backward computation
         ls.backward()
@@ -103,6 +100,7 @@ for epoch_id in range(num_epochs):
         trainer.step(1)
         step_loss += ls.asscalar()
         metric.update([label], [out])
-        # if (batch_id + 1) % (log_interval) == 0:
+        
+        # Print iteration infos, loss, etc.
         print('[Epoch {} Batch {}/{}] loss={:.4f}, lr={:.7f}, acc={:.3f}'.format(epoch_id, batch_id + 1, len(bert_dataloader),step_loss,trainer.learning_rate, metric.get()[1]))
         step_loss = 0
