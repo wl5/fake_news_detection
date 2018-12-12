@@ -25,23 +25,9 @@ except ImportError:
 from gluonnlp.data import TSVDataset
 from gluonnlp.data.registry import register
 
-@register(segment=['train', 'dev', 'test'])
 class DatasetWrapper(TSVDataset):
-    """ Simple wrapper around TSVDataset
-    Parameters
-    ----------
-    segment : str or list of str, default 'train'
-        Dataset segment. Options are 'train', 'val', 'test' or their combinations.
-    root : str, default '$GLUE_DIR/MRPC'
-        Path to the folder which stores the MRPC dataset.
-        The datset can be downloaded by the following script:
-        https://gist.github.com/W4ngatang/60c2bdb54d156a41194446737ce03e2e
-    """
-    def __init__(self, segment='train',
-                 root=os.path.join(os.getenv('GLUE_DIR', 'glue_data'), 'MRPC'), field_separator = None):
-        self._supported_segments = ['train', 'dev', 'test']
-        assert segment in self._supported_segments, 'Unsupported segment: %s'%segment
-        path = os.path.join(root, '%s.tsv'%segment)
+    """ Simple wrapper around TSVDataset. """
+    def __init__(self, path, field_separator = None):
         super(DatasetWrapper, self).__init__(path, field_separator = field_separator)
 
     @staticmethod
