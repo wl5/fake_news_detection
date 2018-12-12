@@ -9,22 +9,10 @@
 ## Previous work & Acknowledgement
 * We forked and built on this [fake news challenge repo](https://github.com/uclmr/fakenewschallenge).
 
+## Problem Formulation
+Given a headline and a body concerning a subject, determine if their views agree or disagree with each other, or, are simply unrelated. 
+
 ## Reproducibility
-
-This repository contains the files necessary to reproduce UCLMR's
-submission.
-
-Rather than providing seed values and requiring the model to be
-retrained, the repository contains relevant scripts and the TensorFlow
-model trained as part of the submission.
-
-The submission can easily be reproduced by loading this model using the
-`pred.py` script to make the predictions on the relevant test set.
-
-Alternatively, as suggested by the organisers of the competition, the
-validity of the submission can also be checked by using the `pred.py`
-script to train the model with different seeds and evaluating the
-mean performance of the system.
 
 ## Getting started
 
