@@ -33,7 +33,7 @@ class DatasetWrapper(TSVDataset):
     @staticmethod
     def get_labels():
         """Get classification label ids of the dataset."""
-        return ['0', '1']
+        return ['0', '1', '2', '3']
 
 def _truncate_seq_pair(tokens_a, tokens_b, max_length):
     """Truncates a sequence pair in place to the maximum length."""
