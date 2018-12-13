@@ -16,6 +16,16 @@ random.seed(100)
 mx.random.seed(10000)
 ctx = mx.cpu()
 
+# All parameters
+max_len = 250
+all_labels = ['0', '1', '2', '3']
+batch_size = 10
+lr = 5e-6
+grad_clip = 1
+num_epochs = 5
+batch_num = 10
+
+# Bert base and vocab
 bert_base, vocabulary = nlp.model.get_model('bert_12_768_12',
                                              dataset_name='book_corpus_wiki_en_uncased',
                                              pretrained=True, ctx=ctx, use_pooler=True,
@@ -34,6 +44,7 @@ loss_function.hybridize(static_alloc=True)
 
 metric = mx.metric.Accuracy()
 
+# Load data
 data_train = dataset.DatasetWrapper('../data/bert_format/train.csv', field_separator = Splitter(','))
 
 # sample_id = 0
@@ -48,8 +59,6 @@ data_train = dataset.DatasetWrapper('../data/bert_format/train.csv', field_separ
 tokenizer = FullTokenizer(vocabulary, do_lower_case=True)
 
 # maximum sequence length
-max_len = 250
-all_labels = ['0', '1', '2', '3']
 transform = dataset.ClassificationTransform(tokenizer, all_labels, max_len)
 data_train = data_train.transform(transform)
 
@@ -58,8 +67,6 @@ data_train = data_train.transform(transform)
 # print('segment ids = \n%s'%data_train[sample_id][2])
 # print('label = \n%s'%data_train[sample_id][3])
 
-batch_size = 10
-lr = 5e-6
 bert_dataloader = mx.gluon.data.DataLoader(data_train, batch_size=batch_size,
         shuffle=True, last_batch='rollover')
 
@@ -67,11 +74,6 @@ trainer = gluon.Trainer(model.collect_params(), 'adam',
         {'learning_rate': lr, 'epsilon': 1e-9})
 
 params = [p for p in model.collect_params().values() if p.grad_req != 'null']
-grad_clip = 1
-
-num_epochs = 5
-
-batch_num = 10
 
 for epoch_id in range(num_epochs):
     metric.reset()
