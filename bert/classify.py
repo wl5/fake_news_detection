@@ -1,4 +1,3 @@
-
 import warnings
 warnings.filterwarnings('ignore')
 import dataset
@@ -9,27 +8,27 @@ from mxnet import gluon
 import gluonnlp as nlp
 from gluonnlp.data.utils import Splitter
 from tokenizer import FullTokenizer
+from bert import *
+import bert 
 
 np.random.seed(100)
 random.seed(100)
 mx.random.seed(10000)
 ctx = mx.cpu()
 
-from bert import *
-import bert
-
 bert_base, vocabulary = nlp.model.get_model('bert_12_768_12',
                                              dataset_name='book_corpus_wiki_en_uncased',
                                              pretrained=True, ctx=ctx, use_pooler=True,
                                              use_decoder=False, use_classifier=False)
 
+# Bert classifier
 model = BERTClassifier(bert_base, num_classes=4, dropout=0.1)
 
-# only need to initialize the classifier layer.
+# Only need to initialize the classifier layer.
 model.classifier.initialize(init=mx.init.Normal(0.02), ctx=ctx)
 model.hybridize(static_alloc=True)
 
-# softmax cross entropy loss for classification
+# Softmax cross entropy loss for classification
 loss_function = gluon.loss.SoftmaxCELoss()
 loss_function.hybridize(static_alloc=True)
 
@@ -37,14 +36,13 @@ metric = mx.metric.Accuracy()
 
 data_train = dataset.DatasetWrapper('../data/bert_format/train.csv', field_separator = Splitter(','))
 
-sample_id = 0
-
-# sentence a
-print(data_train[sample_id][0])
-# sentence b
-print(data_train[sample_id][1])
-# tag
-print(data_train[sample_id][2])
+# sample_id = 0
+# # sentence a
+# print(data_train[sample_id][0])
+# # sentence b
+# print(data_train[sample_id][1])
+# # tag
+# print(data_train[sample_id][2])
 
 # use the vocabulary from pre-trained model for tokenization
 tokenizer = FullTokenizer(vocabulary, do_lower_case=True)
