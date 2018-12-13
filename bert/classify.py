@@ -1,3 +1,7 @@
+"""
+    Entry point to training the bert classifier. 
+"""
+
 import warnings
 warnings.filterwarnings('ignore')
 import dataset
