@@ -1,3 +1,6 @@
+"""
+    Entry point to training the bert classifier. 
+"""
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -9,49 +12,57 @@ from mxnet import gluon
 import gluonnlp as nlp
 from gluonnlp.data.utils import Splitter
 from tokenizer import FullTokenizer
+from bert import *
+import bert 
 
 np.random.seed(100)
 random.seed(100)
 mx.random.seed(10000)
 ctx = mx.cpu()
 
-from bert import *
-import bert
+# All parameters
+max_len = 250
+all_labels = ['0', '1', '2', '3']
+batch_size = 10
+lr = 5e-6
+grad_clip = 1
+num_epochs = 5
+batch_num = 10
 
+# Bert base and vocab
 bert_base, vocabulary = nlp.model.get_model('bert_12_768_12',
                                              dataset_name='book_corpus_wiki_en_uncased',
                                              pretrained=True, ctx=ctx, use_pooler=True,
                                              use_decoder=False, use_classifier=False)
 
-model = BERTClassifier(bert_base, num_classes=2, dropout=0.1)
+# Bert classifier
+model = BERTClassifier(bert_base, num_classes=4, dropout=0.1)
 
-# only need to initialize the classifier layer.
+# Only need to initialize the classifier layer.
 model.classifier.initialize(init=mx.init.Normal(0.02), ctx=ctx)
 model.hybridize(static_alloc=True)
 
-# softmax cross entropy loss for classification
+# Softmax cross entropy loss for classification
 loss_function = gluon.loss.SoftmaxCELoss()
 loss_function.hybridize(static_alloc=True)
 
 metric = mx.metric.Accuracy()
 
-data_train = dataset.DatasetWrapper('test.csv', field_separator = Splitter(','))
+# Load data
+data_train = dataset.DatasetWrapper('../data/bert_format/train.csv', field_separator = Splitter(','))
 
-sample_id = 0
-
-# sentence a
-print(data_train[sample_id][0])
-# sentence b
-print(data_train[sample_id][1])
-# 1 means equivalent, 0 means not equivalent
-print(data_train[sample_id][2])
+# sample_id = 0
+# # sentence a
+# print(data_train[sample_id][0])
+# # sentence b
+# print(data_train[sample_id][1])
+# # tag
+# print(data_train[sample_id][2])
 
 # use the vocabulary from pre-trained model for tokenization
 tokenizer = FullTokenizer(vocabulary, do_lower_case=True)
 
 # maximum sequence length
-max_len = 128
-all_labels = ["0", "1"]
 transform = dataset.ClassificationTransform(tokenizer, all_labels, max_len)
 data_train = data_train.transform(transform)
 
@@ -60,8 +71,6 @@ data_train = data_train.transform(transform)
 # print('segment ids = \n%s'%data_train[sample_id][2])
 # print('label = \n%s'%data_train[sample_id][3])
 
-batch_size = 1
-lr = 5e-6
 bert_dataloader = mx.gluon.data.DataLoader(data_train, batch_size=batch_size,
         shuffle=True, last_batch='rollover')
 
@@ -69,9 +78,6 @@ trainer = gluon.Trainer(model.collect_params(), 'adam',
         {'learning_rate': lr, 'epsilon': 1e-9})
 
 params = [p for p in model.collect_params().values() if p.grad_req != 'null']
-grad_clip = 1
-
-num_epochs = 3
 
 for epoch_id in range(num_epochs):
     metric.reset()
@@ -101,6 +107,8 @@ for epoch_id in range(num_epochs):
         step_loss += ls.asscalar()
         metric.update([label], [out])
         
-        # Print iteration infos, loss, etc.
-        print('[Epoch {} Batch {}/{}] loss={:.4f}, lr={:.7f}, acc={:.3f}'.format(epoch_id, batch_id + 1, len(bert_dataloader),step_loss,trainer.learning_rate, metric.get()[1]))
-        step_loss = 0
+        if batch_id % batch_num == 0:
+            print('Progress: [Epoch {} Batch {}/{}]'.format(epoch_id, batch_id + 1, len(bert_dataloader)))
+        
+    # Print iteration infos, loss, etc.
+    print('[Epoch {} Batch {}/{}] loss={:.4f}, lr={:.7f}, acc={:.3f}'.format(epoch_id, batch_id + 1, len(bert_dataloader),step_loss,trainer.learning_rate, metric.get()[1]))
