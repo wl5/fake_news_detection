@@ -1,0 +1,27 @@
+body{
+    left:50%;
+    text-align: center;
+    background-image: url("background.jpg")
+}
+
+::-webkit-input-placeholder {
+    text-align: center;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    text-align: center;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+    text-align: center;  
+}
+
+:-ms-input-placeholder {  
+    text-align: center; 
+}
+
+#input_tag{
+    font-size: 18pt;
+    width: 650px;
+    height: 100px;
+}
