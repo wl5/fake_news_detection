@@ -18,3 +18,12 @@ Given a headline and a body concerning a subject, determine if their views agree
 
 
 ## Running instruction
+To run the demo, you need to first fill in the dict that contains API keys with your actual keys.  Also, in the main function, you can specify which port you want Flask to use.  Then to run the application, you can simply run 
+```
+python3 demo.py
+```
+Then you can go to 
+```
+http://[Your_External_IP]:[Port]
+```
+To access the demo webpage.
