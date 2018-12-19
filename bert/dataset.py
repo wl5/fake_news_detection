@@ -16,6 +16,7 @@
 
 __all__ = ['DatasetWrapper', 'ClassificationTransform', 'BERTTransform']
 
+import io
 import os
 import numpy as np
 try:
@@ -25,15 +26,33 @@ except ImportError:
 from gluonnlp.data import TSVDataset
 from gluonnlp.data.registry import register
 
+def line_splitter(s):
+    return s.split('\n')
+
 class DatasetWrapper(TSVDataset):
     """ Simple wrapper around TSVDataset. """
     def __init__(self, path, field_separator = None):
-        super(DatasetWrapper, self).__init__(path, field_separator = field_separator)
-
+        super(DatasetWrapper, self).__init__(path, 
+                field_separator = field_separator, 
+                sample_splitter = line_splitter)
+    
     @staticmethod
     def get_labels():
         """Get classification label ids of the dataset."""
         return ['0', '1', '2', '3']
+    
+    def _read(self):
+        all_samples = []
+        for filename in self._filenames:
+            with io.open(filename, 'r', encoding=self._encoding) as fin:
+                content = fin.read()
+            raw_samples = self._sample_splitter(content)
+            samples_data = list(filter(lambda x: len(x) > 0, raw_samples))
+            samples = (s for s in samples_data if not self._should_discard())
+            if self._field_separator:
+                samples = [self._field_selector(self._field_separator(s)) for s in samples]
+            all_samples += samples
+        return all_samples
 
 def _truncate_seq_pair(tokens_a, tokens_b, max_length):
     """Truncates a sequence pair in place to the maximum length."""
