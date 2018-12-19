@@ -1,6 +1,7 @@
 """
 Big Data Fake News Project
 Wei Luo, Yuanchu Dang, Yanmin Ji
+Replace the keys with your actual keys.
 """
 
 # first make sure we have the correct asynchronous mode
@@ -55,10 +56,10 @@ thread = None
 
 # keys for tweepy
 cred = {
-            "consumer_key": "ymWdPx3LGmNyugc4ed8YBoN5l", 
-            "consumer_secret": "y2GbumVjSK3y7uvRXxC7O4uRzPrELJwDlo3WlvdHx0s3HnMTMV", 
-            "access_key": "1051983969196142592-rpL36IJu7Xol6I2umf28dgPFQv1vzg", 
-            "access_secret": "JEO65jcbWVXCYkGy17UR7Wwyh1MqfRbAlMY6BMD399oZR"
+            "consumer_key": "", 
+            "consumer_secret": "", 
+            "access_key": "", 
+            "access_secret": ""
         }
 auth = tweepy.OAuthHandler(cred['consumer_key'], cred['consumer_secret'])
 auth.set_access_token(cred['access_key'], cred['access_secret'])
