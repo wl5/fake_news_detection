@@ -7,7 +7,7 @@ Wei Luo, Yanmin Ji, Yuanchu Dang
 The spreading of rumours, or Fake News, keeps growing at an alarming rate on online social network platforms. With the recent booming development in Machine Learning fields, different models have been designed for human-level accuracy in specific tasks. However, most of them cannot be used for real-time predictions because of their large number of parameters.  This work presents a lightweight approach that has similar accuracy yet much faster predicting speed, making it an outstanding candidate for real-time analysis in big data era.
 
 ## Technical Details
-Please see here for our report.
+Please see [here](report.pdf) for our report.
 
 ## Acknowledgement
 * We forked and built on this [fake news challenge repo](https://github.com/uclmr/fakenewschallenge).
